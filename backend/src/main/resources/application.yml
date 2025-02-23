@@ -1,1 +1,35 @@
-spring.application.name=backend
+spring:
+  application:
+    name: it-support-ticket-system-backend
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/XE
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: ticket_system
+    password: ticketsystem123
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database: oracle
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          private-key: classpath:app.private.key
+          public-key: classpath:app.public.key
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
