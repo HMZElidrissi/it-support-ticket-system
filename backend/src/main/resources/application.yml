@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:oracle:thin:@localhost:1521/XE
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    username: ticket_system
+    username: system
     password: ticketsystem123
 
   jpa:
@@ -13,7 +13,6 @@ spring:
       ddl-auto: none
     show-sql: true
     database: oracle
-    database-platform: org.hibernate.dialect.Oracle12cDialect
 
   flyway:
     enabled: true
@@ -29,7 +28,3 @@ spring:
         jwt:
           private-key: classpath:app.private.key
           public-key: classpath:app.public.key
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
