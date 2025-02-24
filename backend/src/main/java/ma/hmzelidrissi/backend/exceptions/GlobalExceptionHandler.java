@@ -94,13 +94,16 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDeniedException(
             AccessDeniedException ex, HttpServletRequest request) {
-        return ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.FORBIDDEN.value())
-                .error(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .message("Access Denied: You don't have permission to access this resource")
-                .path(request.getRequestURI())
-                .build();
+    return ErrorResponse.builder()
+        .timestamp(LocalDateTime.now())
+        .status(HttpStatus.FORBIDDEN.value())
+        .error(HttpStatus.FORBIDDEN.getReasonPhrase())
+        .message(
+            ex.getMessage() != null
+                ? ex.getMessage()
+                : "Access Denied: You don't have permission to access this resource")
+        .path(request.getRequestURI())
+        .build();
     }
 
     @ExceptionHandler(AuthenticationException.class)
