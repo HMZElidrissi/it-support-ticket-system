@@ -4,18 +4,13 @@ A simple ticket management application that allows employees to report and track
 
 ## Table of Contents
 - [Overview](#overview)
-- [Features](#features)
 - [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
 - [Setup & Installation](#setup--installation)
-    - [Backend Setup](#backend-setup)
-    - [Frontend Setup](#frontend-setup)
-    - [Database Setup](#database-setup)
+- [Database Migration](#database-migration)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Security](#security)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
