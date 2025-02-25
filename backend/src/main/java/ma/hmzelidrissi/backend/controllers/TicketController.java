@@ -1,19 +1,14 @@
 package ma.hmzelidrissi.backend.controllers;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import ma.hmzelidrissi.backend.domain.Status;
 import ma.hmzelidrissi.backend.dtos.ticket.*;
 import ma.hmzelidrissi.backend.services.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tickets")
@@ -25,23 +20,23 @@ public class TicketController {
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("isAuthenticated()")
   public TicketDetailDto createTicket(@Valid @RequestBody CreateTicketRequestDto request) {
-    return ticketService.createTicket(request, getUserEmail());
+    return ticketService.createTicket(request);
   }
 
   @GetMapping
   public List<TicketSummaryDto> getAllTickets(@RequestParam(required = false) Status status) {
-    return ticketService.getAllTickets(status, getUserEmail());
+    return ticketService.getAllTickets(status);
   }
 
   @GetMapping("/{id}")
   public TicketDetailDto getTicketById(@PathVariable Long id) {
-    return ticketService.getTicketById(id, getUserEmail());
+    return ticketService.getTicketById(id);
   }
 
   @PatchMapping("/{id}/status")
   @PreAuthorize("hasRole('IT_SUPPORT')")
   public TicketDetailDto updateTicketStatus(@PathVariable Long id, @RequestParam Status status) {
-    return ticketService.updateTicketStatus(id, status, getUserEmail());
+    return ticketService.updateTicketStatus(id, status);
   }
 
   @PostMapping("/{id}/comments")
@@ -49,16 +44,11 @@ public class TicketController {
   @PreAuthorize("hasRole('IT_SUPPORT')")
   public CommentDto addComment(
       @PathVariable Long id, @RequestBody @Valid AddCommentRequestDto request) {
-    return ticketService.addComment(id, request.content(), getUserEmail());
+    return ticketService.addComment(id, request.content());
   }
 
   @GetMapping("/search")
   public List<TicketSummaryDto> searchTickets(@RequestParam String term) {
-    return ticketService.searchTickets(term, getUserEmail());
-  }
-
-  private String getUserEmail() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication.getName();
+    return ticketService.searchTickets(term);
   }
 }

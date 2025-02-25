@@ -10,6 +10,8 @@ import ma.hmzelidrissi.backend.repositories.TicketRepository;
 import ma.hmzelidrissi.backend.repositories.UserRepository;
 import ma.hmzelidrissi.backend.repositories.AuditLogRepository;
 import ma.hmzelidrissi.backend.services.TicketService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,8 +30,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public TicketDetailDto createTicket(CreateTicketRequestDto request, String creatorEmail) {
-        User creator = getUserByEmail(creatorEmail);
+    public TicketDetailDto createTicket(CreateTicketRequestDto request) {
+        User creator = getCurrentUserByEmail();
 
         Ticket ticket = Ticket.builder()
                 .title(request.title())
@@ -56,8 +58,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TicketSummaryDto> getAllTickets(Status status, String userEmail) {
-        User user = getUserByEmail(userEmail);
+    public List<TicketSummaryDto> getAllTickets(Status status) {
+        User user = getCurrentUserByEmail();
         List<Ticket> tickets;
 
         // If IT_SUPPORT, can see all tickets, otherwise only own tickets
@@ -82,8 +84,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional(readOnly = true)
     @Override
-    public TicketDetailDto getTicketById(Long ticketId, String userEmail) {
-        User user = getUserByEmail(userEmail);
+    public TicketDetailDto getTicketById(Long ticketId) {
+        User user = getCurrentUserByEmail();
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
@@ -97,8 +99,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public TicketDetailDto updateTicketStatus(Long ticketId, Status newStatus, String userEmail) {
-        User user = getUserByEmail(userEmail);
+    public TicketDetailDto updateTicketStatus(Long ticketId, Status newStatus) {
+        User user = getCurrentUserByEmail();
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
@@ -126,8 +128,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public CommentDto addComment(Long ticketId, String content, String userEmail) {
-        User user = getUserByEmail(userEmail);
+    public CommentDto addComment(Long ticketId, String content) {
+        User user = getCurrentUserByEmail();
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
@@ -153,8 +155,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TicketSummaryDto> searchTickets(String searchTerm, String userEmail) {
-        User user = getUserByEmail(userEmail);
+    public List<TicketSummaryDto> searchTickets(String searchTerm) {
+        User user = getCurrentUserByEmail();
         List<Ticket> tickets;
 
         Long ticketId = null;
@@ -183,7 +185,10 @@ public class TicketServiceImpl implements TicketService {
                 .collect(Collectors.toList());
     }
 
-    private User getUserByEmail(String email) {
+    private User getCurrentUserByEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }

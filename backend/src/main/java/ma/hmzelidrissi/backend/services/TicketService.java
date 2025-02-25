@@ -8,15 +8,15 @@ import ma.hmzelidrissi.backend.dtos.ticket.TicketDetailDto;
 import ma.hmzelidrissi.backend.dtos.ticket.TicketSummaryDto;
 
 public interface TicketService {
-    TicketDetailDto createTicket(CreateTicketRequestDto request, String creatorEmail);
+    TicketDetailDto createTicket(CreateTicketRequestDto request);
 
-    List<TicketSummaryDto> getAllTickets(Status status, String userEmail);
+    List<TicketSummaryDto> getAllTickets(Status status);
 
-    TicketDetailDto getTicketById(Long ticketId, String userEmail);
+    TicketDetailDto getTicketById(Long ticketId);
 
-    TicketDetailDto updateTicketStatus(Long ticketId, Status newStatus, String userEmail);
+    TicketDetailDto updateTicketStatus(Long ticketId, Status newStatus);
 
-    CommentDto addComment(Long ticketId, String content, String userEmail);
+    CommentDto addComment(Long ticketId, String content);
 
-    List<TicketSummaryDto> searchTickets(String searchTerm, String userEmail);
+    List<TicketSummaryDto> searchTickets(String searchTerm);
 }
