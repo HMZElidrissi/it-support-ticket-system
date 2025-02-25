@@ -3,7 +3,7 @@ package ma.hmzelidrissi.frontend;
 import javax.swing.*;
 import ma.hmzelidrissi.frontend.ui.AuthFrame;
 
-public class Main {
+public class FrontendApplication {
   public static void main(String[] args) {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
