@@ -47,6 +47,11 @@ public class TicketController {
     return ticketService.addComment(id, request.content());
   }
 
+  @GetMapping("/{id}/comments")
+  public List<CommentDto> getTicketComments(@PathVariable Long id) {
+      return ticketService.getTicketComments(id);
+  }
+
   @GetMapping("/search")
   public List<TicketSummaryDto> searchTickets(@RequestParam String term) {
     return ticketService.searchTickets(term);

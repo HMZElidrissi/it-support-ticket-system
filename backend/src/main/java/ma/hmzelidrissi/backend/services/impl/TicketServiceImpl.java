@@ -185,6 +185,16 @@ public class TicketServiceImpl implements TicketService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<CommentDto> getTicketComments(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+
+        return ticket.getComments().stream()
+                .map(TicketMapper::mapToCommentDto)
+                .collect(Collectors.toList());
+    }
+
     private User getCurrentUserByEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

@@ -19,4 +19,6 @@ public interface TicketService {
     CommentDto addComment(Long ticketId, String content);
 
     List<TicketSummaryDto> searchTickets(String searchTerm);
+
+    List<CommentDto> getTicketComments(Long ticketId);
 }
