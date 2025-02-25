@@ -5,7 +5,7 @@
 
     <groupId>ma.hmzelidrissi</groupId>
     <artifactId>it-support-ticket-system</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>it-support-ticket-system</name>
     <description>it-support-ticket-system</description>
