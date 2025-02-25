@@ -24,7 +24,7 @@ public class CreateTicketDialog extends JDialog {
 
     public CreateTicketDialog(Frame owner) {
         super(owner, "Create New Ticket", true);
-        setSize(500, 500);
+        setSize(500, 600);
         setLocationRelativeTo(owner);
 
         JPanel mainPanel = new JPanel(new MigLayout("fillx, insets 20", "[grow]"));
@@ -51,7 +51,7 @@ public class CreateTicketDialog extends JDialog {
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(descriptionArea);
-        mainPanel.add(scrollPane, "growx, wrap, gapbottom 20, height 150:150:200");
+        mainPanel.add(scrollPane, "growx, wrap, gapbottom 20, height 200:250:300");
 
         // Buttons panel
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0", "[grow][grow]"));

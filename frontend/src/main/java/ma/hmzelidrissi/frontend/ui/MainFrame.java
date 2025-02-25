@@ -49,7 +49,6 @@ public class MainFrame extends JFrame {
         };
     ticketsTable = new JTable(tableModel);
 
-    // Configure table appearance
     ticketsTable.setRowHeight(40);
     ticketsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     ticketsTable.setAutoCreateRowSorter(true);
@@ -63,27 +62,22 @@ public class MainFrame extends JFrame {
           }
         });
 
-    // Add content to main panel
     setupContentPanel();
 
-    // Split layout with fixed-width sidebar
     mainPanel.add(sidebarPanel, "width 250::250, grow y");
     mainPanel.add(contentPanel, "grow");
 
     add(mainPanel);
 
-    // Load tickets
     loadTickets();
   }
 
   private void setupSidebar() {
     sidebarPanel.setBackground(new Color(50, 50, 65));
 
-    // User profile section
     JPanel profilePanel = new JPanel(new MigLayout("fillx, insets 10", "[center]"));
     profilePanel.setOpaque(false);
 
-    // User avatar
     JLabel avatarLabel = new JLabel();
     avatarLabel.setIcon(
         UIUtils.createAvatar(AuthManager.getInstance().getCurrentUser().name(), 64));
@@ -96,7 +90,6 @@ public class MainFrame extends JFrame {
     nameLabel.setForeground(Color.WHITE);
     profilePanel.add(nameLabel, "wrap");
 
-    // User role
     JLabel roleLabel = new JLabel(AuthManager.getInstance().getCurrentUser().role());
     roleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
     roleLabel.setForeground(new Color(200, 200, 200));
@@ -104,7 +97,6 @@ public class MainFrame extends JFrame {
 
     sidebarPanel.add(profilePanel, "growx, wrap, gapbottom 20");
 
-    // Menu items
     addMenuItem("All Tickets", e -> loadTickets());
 
     if (isITSupport) {
@@ -115,7 +107,6 @@ public class MainFrame extends JFrame {
       addMenuItem("Create Ticket", e -> openNewTicketDialog());
     }
 
-    // Add bottom section with logout button
     JButton logoutButton = new JButton("Logout");
     logoutButton.addActionListener(e -> logout());
 
@@ -137,14 +128,12 @@ public class MainFrame extends JFrame {
   }
 
   private void setupContentPanel() {
-    // Header section with title and search/filter
     JPanel headerPanel = new JPanel(new MigLayout("fillx, insets 0 0 20 0", "[grow][]"));
 
     JLabel titleLabel = new JLabel("All Tickets");
     titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
     headerPanel.add(titleLabel, "cell 0 0");
 
-    // Search field
     JTextField searchField = new JTextField(15);
     searchField.putClientProperty("JTextField.placeholderText", "Search by ID...");
 
@@ -192,7 +181,6 @@ public class MainFrame extends JFrame {
 
       updateTableWithTickets(currentTickets);
 
-      // Update header
       JLabel titleLabel = (JLabel) ((JPanel) contentPanel.getComponent(0)).getComponent(0);
       titleLabel.setText("All Tickets");
 
@@ -210,7 +198,6 @@ public class MainFrame extends JFrame {
       currentTickets = ticketApi.getTicketsByStatus(status);
       updateTableWithTickets(currentTickets);
 
-      // Update header
       JLabel titleLabel = (JLabel) ((JPanel) contentPanel.getComponent(0)).getComponent(0);
       titleLabel.setText(status.toString() + " Tickets");
 
@@ -230,7 +217,6 @@ public class MainFrame extends JFrame {
         currentTickets = List.of(ticket);
         updateTableWithTickets(currentTickets);
 
-        // Update header
         JLabel titleLabel = (JLabel) ((JPanel) contentPanel.getComponent(0)).getComponent(0);
         titleLabel.setText("Search Results");
       } else {
@@ -245,10 +231,8 @@ public class MainFrame extends JFrame {
   }
 
   private void updateTableWithTickets(List<Ticket> tickets) {
-    // Clear existing data
     tableModel.setRowCount(0);
 
-    // Add new data
     for (Ticket ticket : tickets) {
       Object[] rowData = {
         ticket.getId(),
@@ -265,7 +249,6 @@ public class MainFrame extends JFrame {
   private void openTicketDetails() {
     int selectedRow = ticketsTable.getSelectedRow();
     if (selectedRow >= 0) {
-      // Convert view index to model index (in case table is sorted)
       int modelRow = ticketsTable.convertRowIndexToModel(selectedRow);
       Long ticketId = (Long) tableModel.getValueAt(modelRow, 0);
 
@@ -280,7 +263,6 @@ public class MainFrame extends JFrame {
           TicketDetailDialog dialog = new TicketDetailDialog(this, ticket, isITSupport);
           dialog.setVisible(true);
 
-          // Reload tickets if dialog returns success (ticket was updated)
           if (dialog.isTicketUpdated()) {
             loadTickets();
           }
@@ -295,7 +277,6 @@ public class MainFrame extends JFrame {
     CreateTicketDialog dialog = new CreateTicketDialog(this);
     dialog.setVisible(true);
 
-    // Reload tickets if a new ticket was created
     if (dialog.isTicketCreated()) {
       loadTickets();
     }

@@ -71,7 +71,7 @@ public class TicketApi {
     public boolean updateTicketStatus(Long id, UpdateStatusRequest request) throws Exception {
         String json = objectMapper.writeValueAsString(request);
 
-        HttpResponse<String> response = apiClient.put(BASE_URL + "/" + id + "/status", json);
+        HttpResponse<String> response = apiClient.put(BASE_URL + "/" + id + "/status?status=", json);
 
         return response.statusCode() == 200;
     }
